@@ -1,30 +1,27 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+[Nest](https://github.com/nestjs/nest) framework TypeScript with PostgreSQL database for a to do list.
+
+## Preparation
+The application requires that node and npm are installed beforehand. Also you will need a local setup of postgres database.
+
+Node version: ```14.19.2```
+
+Postgres version: ```14.5```
+
+## Environment
+
+Environment setup is as easy as it comes. There is already a ```.env.example``` file inside the repository. First step would be to copy that file to another named ```.env```.
+```
+PORT= Port that the app runs on, suggested to leave 3000
+POSTGRES_HOST= Host url of the postgres database
+POSTGRES_PORT= Port of the postgres database
+POSTGRES_USER= Corresponding user for the postgres database
+POSTGRES_PASSWORD= Password for the user for the postgres database
+POSTGRES_DB= Database name where your app data resides in postgres
+JWT_SECRET= Your jwt secret
+```
 
 ## Installation
 
@@ -58,16 +55,66 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
-## Support
+## App endpoints and how to use them
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### POST ```/user/register```
 
-## Stay in touch
+This route is the starting point. It will register your user allowing you to login and get a Bearer token for the other endpoints
+```
+Example Request Body:
+{
+    "name": "Nina",
+    "email": "ninakelmendi@gmail.com,
+    "password": "VerySecurePassw0rd!",
+}
+```
+### POST ```/user/login```
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+Here you register with your user and get a bearer token as a response where you have to use it for all other routes
+```
+Example Request Body:
+{
+    "email": "ninakelmendi@gmail.com,
+    "password": "VerySecurePassw0rd!",
+}
+```
 
-## License
+### POST ```/task/all```
 
-Nest is [MIT licensed](LICENSE).
+Here you can retrieve all your created tasks
+
+### POST ```/task/all/:status```
+
+Here you can retrieve all your created tasks filtered by status. The status is one of 3 states find in the Status enum in the enums folder
+
+### POST ```/task/create```
+
+Here you can create tasks
+```
+Example Request Body:
+{
+    "name": "Clean the house,
+    "description": "Don't forget to make your bed !,
+    "status": "Status.ToDo",
+}
+```
+
+### POST ```/task/update/:id```
+
+Here you can update a certain task using the id parameter 
+```
+Example Request Body:
+{
+    "name": "Clean the house,
+    "description": "Don't forget to make your bed !,
+    "status": "Status.ToDo",
+}
+```
+
+### POST ```/task/delete/:id```
+
+Here you can delete a certain task using the id parameter 
+
+### POST ```/task/averageCompletedTasks/```
+
+Here you get the avarage of all completed tasks relative to total tasks.

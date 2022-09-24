@@ -33,7 +33,7 @@ export class TaskController {
     return this.taskService.getTasksByStatus(status);
   }
 
-  @Put('update/:id')
+  @Put('/update/:id')
   public async update(@Param('id') id, @Body() updateTaskDto: UpdateTaskDto) {
     updateTaskDto.id = id;
     return this.taskService.update(updateTaskDto);
